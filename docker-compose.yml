@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  webz-001:
+    build: ./cluster-node
+    container_name: webz-001
+    hostname: webz-001
+    networks:
+      webz-net:
+        ipv4_address: 172.20.0.11
+    privileged: true
+
+  webz-002:
+    build: ./cluster-node
+    container_name: webz-002
+    hostname: webz-002
+    networks:
+      webz-net:
+        ipv4_address: 172.20.0.12
+    privileged: true
+
+  webz-003:
+    build: ./cluster-node
+    container_name: webz-003
+    hostname: webz-003
+    networks:
+      webz-net:
+        ipv4_address: 172.20.0.13
+    privileged: true
+
+  webz-004:
+    build: ./jenkins-node
+    container_name: webz-004
+    hostname: webz-004
+    networks:
+      webz-net:
+        ipv4_address: 172.20.0.14
+    ports:
+      - "8080:8080"   # Jenkins UI
+      - "8000:8000"   # Optional: expose logs via simple HTTP server
+
+networks:
+  webz-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
